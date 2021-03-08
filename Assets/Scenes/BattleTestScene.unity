@@ -3308,6 +3308,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7820625808254967284, guid: fdbc82a793bc48f42bb6080a582c8dfe,
+        type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 77256897}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdbc82a793bc48f42bb6080a582c8dfe, type: 3}
 --- !u!4 &1015382587 stripped
@@ -4559,7 +4564,7 @@ MonoBehaviour:
   weapon: {fileID: 0}
   permissibleDistance: 0
   movingTarget: {x: 0, y: 0, z: 0}
-  cell: {fileID: 1502452757}
+  cell: {fileID: 2044856568}
   bf: {fileID: 592410658}
   showDamageDelay: 0.25
 --- !u!136 &1625742171
@@ -5236,6 +5241,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7820625808254967284, guid: fdbc82a793bc48f42bb6080a582c8dfe,
         type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 1625742170}
+    - target: {fileID: 7820625808254967284, guid: fdbc82a793bc48f42bb6080a582c8dfe,
+        type: 3}
       propertyPath: position.x
       value: 2
       objectReference: {fileID: 0}
@@ -5514,7 +5524,7 @@ PrefabInstance:
         type: 3}
       propertyPath: unit
       value: 
-      objectReference: {fileID: 1625742170}
+      objectReference: {fileID: 0}
     - target: {fileID: 7820625808254967284, guid: fdbc82a793bc48f42bb6080a582c8dfe,
         type: 3}
       propertyPath: position.x
