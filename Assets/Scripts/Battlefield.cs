@@ -14,8 +14,10 @@ public class Battlefield : MonoBehaviour
 
     }
 
-    public Cell FindCell(int x, int y)
+    public Cell FindCell(float x, float y)
     {
        return cells.Find(cell => cell.position.x == x && cell.position.y == y);
     }
+
+    
 }

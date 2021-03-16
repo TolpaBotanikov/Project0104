@@ -109,3 +109,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
   unit: {fileID: 0}
+  ostacle: {fileID: 0}

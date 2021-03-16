@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
 {
     public int range;
     public int damage;
+    public float hitChance;
     // Start is called before the first frame update
     void Start()
     {

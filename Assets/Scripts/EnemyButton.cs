@@ -14,7 +14,6 @@ public class EnemyButton : MonoBehaviour
             if (BattleManager.S.selectedEnemy != null)
                 BattleManager.S.selectedEnemy.Selected = false;
             BattleManager.S.selectedEnemy = enemy;
-            print("Цель изменена");
         }
         else
         {
