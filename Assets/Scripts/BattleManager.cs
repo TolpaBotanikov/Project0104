@@ -66,26 +66,30 @@ public class BattleManager : MonoBehaviour
 
     public void AttackUnit(Unit attackedUnit)
     {
+        if (attackedUnit is Enemy)
+            (attackedUnit as Enemy).Selected = false;
         List<Cell> traectory = Cell.CreateTraectory(
             bf.FindCell(_crntUnit.Position.x, _crntUnit.Position.y),
             bf.FindCell(attackedUnit.Position.x, attackedUnit.Position.y), bf);
         float hitChance = _crntUnit.weapon.hitChance;
-        /* Для отладки */ int obstacleCnt = 0;
         foreach(Cell cell in traectory)
         {
             if (cell.ostacle != null)
             {
                 hitChance *= cell.ostacle.hitChance;
-                obstacleCnt++;
             }
         }
         if (Random.value > hitChance)
             return;
-        if (attackedUnit is Enemy)
-            (attackedUnit as Enemy).Selected = false;
+        _crntUnit.weapon.transform.LookAt(attackedUnit.transform);
+        Projectile proj = Instantiate(_crntUnit.weapon.projectilePrefab,
+            _crntUnit.weapon.shootPoint.transform.position, 
+            _crntUnit.transform.rotation, 
+            _crntUnit.weapon.transform).GetComponent<Projectile>();
+        proj.target = attackedUnit.transform.position;
+        proj.rigid.velocity = _crntUnit.weapon.transform.forward * proj.speed;
         attackedUnit.Health -= _crntUnit.weapon.damage;
         CrntUnit = _crntUnit;
-        print(hitChance + " " + obstacleCnt);
     }
 
     public Unit CrntUnit

@@ -11,7 +11,8 @@ public class Battlefield : MonoBehaviour
 
     private void Awake()
     {
-
+        Cell[] c = GetComponentsInChildren<Cell>();
+        cells = new List<Cell>(c);
     }
 
     public Cell FindCell(float x, float y)
