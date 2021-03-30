@@ -5,7 +5,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [SerializeField]
-    private Vector2Int _position;
+    private Vector2 _position;
     [SerializeField]
     private float height;
     public float speed;
@@ -15,13 +15,12 @@ public class Unit : MonoBehaviour
     public float permissibleDistance; //Плавность движения
     private bool moving;
     public Vector3 movingTarget;
-    public Cell cell;
     public Battlefield bf;
     public float showDamageDelay;
 
     private void Awake()
     {
-        cell.unit = this;
+
     }
 
     protected void Update()
@@ -41,7 +40,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public Vector2Int Position
+    public Vector2 Position
     {
         get { return _position; }
         set {  _position = value; }
@@ -49,7 +48,6 @@ public class Unit : MonoBehaviour
 
     public void GoToCell(Cell target)
     {
-        cell = target;
         movingTarget = new Vector3(target.transform.position.x,
             target.transform.position.y + height,
             target.transform.position.z);

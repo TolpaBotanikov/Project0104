@@ -35,31 +35,31 @@ public class BattleManager : MonoBehaviour
     public void walkBtnClick(int dir)
     {
         direction crntDir = (direction)dir;
-        Vector2Int pos = _crntUnit.Position;
+        Vector2 pos = _crntUnit.Position;
         Cell target = new Cell();
         switch (crntDir)
         {
             case direction.left:
-                target = bf.FindCell(pos.x - 1, pos.y);
+                target = bf.FindCell(pos.x - 1, pos.y + 1);
                 break;
             case direction.leftBack:
                 target = bf.FindCell(pos.x, pos.y + 1);
                 break;
             case direction.leftForward:
-                target = bf.FindCell(pos.x - 1, pos.y - 1);
+                target = bf.FindCell(pos.x - 1, pos.y);
                 break;
             case direction.Right:
-                target = bf.FindCell(pos.x + 1, pos.y);
+                target = bf.FindCell(pos.x + 1, pos.y - 1);
                 break;
             case direction.RightBack:
-                target = bf.FindCell(pos.x + 1, pos.y + 1);
+                target = bf.FindCell(pos.x + 1, pos.y);
                 break;
             case direction.RightForward:
                 target = bf.FindCell(pos.x, pos.y - 1);
                 break;
         }
+        _crntUnit.bf.FindCell(_crntUnit.Position.x, _crntUnit.Position.y).unit = null;
         _crntUnit.Position = target.position;
-        _crntUnit.cell.unit = null;
         _crntUnit.GoToCell(target);
         CrntUnit = _crntUnit;
     }
@@ -68,6 +68,26 @@ public class BattleManager : MonoBehaviour
     {
         if (attackedUnit is Enemy)
             (attackedUnit as Enemy).Selected = false;
+        List<Cell> traectory = Cell.CreateTraectory(
+            bf.FindCell(_crntUnit.Position.x, _crntUnit.Position.y),
+            bf.FindCell(attackedUnit.Position.x, attackedUnit.Position.y), bf);
+        float hitChance = _crntUnit.weapon.hitChance;
+        foreach(Cell cell in traectory)
+        {
+            if (cell.ostacle != null)
+            {
+                hitChance *= cell.ostacle.hitChance;
+            }
+        }
+        if (Random.value > hitChance)
+            return;
+        _crntUnit.weapon.transform.LookAt(attackedUnit.transform);
+        Projectile proj = Instantiate(_crntUnit.weapon.projectilePrefab,
+            _crntUnit.weapon.shootPoint.transform.position, 
+            _crntUnit.transform.rotation, 
+            _crntUnit.weapon.transform).GetComponent<Projectile>();
+        proj.target = attackedUnit.transform.position;
+        proj.rigid.velocity = _crntUnit.weapon.transform.forward * proj.speed;
         attackedUnit.Health -= _crntUnit.weapon.damage;
         CrntUnit = _crntUnit;
     }
@@ -86,20 +106,13 @@ public class BattleManager : MonoBehaviour
                         material.color = Color.white;
                 foreach (Button wb in walkButtons)
                     wb.interactable = true;
-                if (bf.FindCell(pos.x - 1, pos.y - 1) == null || 
-                    bf.FindCell(pos.x - 1, pos.y - 1).unit != null)
-                    walkButtons[0].interactable = false;
-                else
-                {
-                    var cell = bf.FindCell(pos.x - 1, pos.y - 1);
-                    cell.gameObject.GetComponent<Renderer>().
-                        material.color = Color.green;
-                    bf.recoloredCells.Add(cell);
-                }
 
-                if (bf.FindCell(pos.x - 1, pos.y) == null || 
-                    bf.FindCell(pos.x - 1, pos.y).unit != null)
-                    walkButtons[1].interactable = false;
+                // Левый передний
+                Cell lf = bf.FindCell(pos.x - 1, pos.y);
+                if (lf == null || 
+                    lf.unit != null ||
+                    lf.ostacle != null)
+                    walkButtons[0].interactable = false;
                 else
                 {
                     var cell = bf.FindCell(pos.x - 1, pos.y);
@@ -108,8 +121,25 @@ public class BattleManager : MonoBehaviour
                     bf.recoloredCells.Add(cell);
                 }
 
-                if (bf.FindCell(pos.x, pos.y + 1) == null || 
-                    bf.FindCell(pos.x, pos.y + 1).unit != null)
+                // Левый
+                Cell l = bf.FindCell(pos.x - 1, pos.y + 1);
+                if (l == null ||
+                    l.unit != null ||
+                    l.ostacle != null)
+                    walkButtons[1].interactable = false;
+                else
+                {
+                    var cell = bf.FindCell(pos.x - 1, pos.y + 1);
+                    cell.gameObject.GetComponent<Renderer>().
+                        material.color = Color.green;
+                    bf.recoloredCells.Add(cell);
+                }
+
+                // Левый задний
+                Cell lb = bf.FindCell(pos.x, pos.y + 1);
+                if (lb == null || 
+                    lb.unit != null ||
+                    lb.ostacle != null)
                     walkButtons[2].interactable = false;
                 else
                 {
@@ -119,8 +149,11 @@ public class BattleManager : MonoBehaviour
                     bf.recoloredCells.Add(cell);
                 }
 
-                if (bf.FindCell(pos.x, pos.y - 1) == null || 
-                    bf.FindCell(pos.x, pos.y - 1).unit != null)
+                // Правый передний
+                Cell rf = bf.FindCell(pos.x, pos.y - 1);
+                if (rf == null || 
+                    rf.unit != null ||
+                    rf.ostacle != null)
                     walkButtons[3].interactable = false;
                 else
                 {
@@ -130,23 +163,29 @@ public class BattleManager : MonoBehaviour
                     bf.recoloredCells.Add(cell);
                 }
 
-                if (bf.FindCell(pos.x + 1, pos.y) == null || 
-                    bf.FindCell(pos.x + 1, pos.y).unit != null)
+                // Правый
+                Cell r = bf.FindCell(pos.x + 1, pos.y - 1);
+                if (r == null || 
+                    r.unit != null ||
+                    r.ostacle != null)
                     walkButtons[4].interactable = false;
                 else
                 {
-                    var cell = bf.FindCell(pos.x + 1, pos.y);
+                    var cell = bf.FindCell(pos.x + 1, pos.y - 1);
                     cell.gameObject.GetComponent<Renderer>().
                         material.color = Color.green;
                     bf.recoloredCells.Add(cell);
                 }
 
-                if (bf.FindCell(pos.x + 1, pos.y + 1) == null || 
-                    bf.FindCell(pos.x + 1, pos.y + 1).unit != null)
+                // Правый задний
+                Cell rb = bf.FindCell(pos.x + 1, pos.y);
+                if (rb == null || 
+                    rb.unit != null ||
+                    rb.ostacle != null)
                     walkButtons[5].interactable = false;
                 else
                 {
-                    var cell = bf.FindCell(pos.x + 1, pos.y + 1);
+                    var cell = bf.FindCell(pos.x + 1, pos.y);
                     cell.gameObject.GetComponent<Renderer>().
                         material.color = Color.green;
                     bf.recoloredCells.Add(cell);
