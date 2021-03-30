@@ -45,6 +45,9 @@ ModelImporter:
   - first:
       74: -4300400019511525569
     second: idle.001 (1)
+  - first:
+      74: 1229584163444893091
+    second: Armature|walking (1)
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -74,8 +77,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: idle.001
-      takeName: idle.001
+      name: Armature|walking (1)
+      takeName: Armature|walking
       internalID: 0
       firstFrame: 0
       lastFrame: 60
