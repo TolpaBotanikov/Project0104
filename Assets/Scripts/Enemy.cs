@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Класс для работы с врагами
+/// </summary>
 public class Enemy : Unit
 {
     private bool _selected;

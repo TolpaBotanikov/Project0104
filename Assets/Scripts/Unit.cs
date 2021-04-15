@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Класс для работы с юнитами
+/// </summary>
 public class Unit : MonoBehaviour
 {
+    /// <summary>
+    /// Координаты юнита
+    /// </summary>
     [SerializeField]
     private Vector2 _position;
     [SerializeField]
@@ -11,6 +17,9 @@ public class Unit : MonoBehaviour
     public float speed;
     [SerializeField]
     private int _health;
+    /// <summary>
+    /// Текущее оружие
+    /// </summary>
     public Weapon weapon;
     public float permissibleDistance; //Плавность движения
     private bool moving;
@@ -25,6 +34,7 @@ public class Unit : MonoBehaviour
 
     protected void Update()
     {
+        // Движение юнита
         if (moving)
         {
             Vector3 pos = new Vector3();
@@ -40,12 +50,19 @@ public class Unit : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Координаты юнита
+    /// </summary>
     public Vector2 Position
     {
         get { return _position; }
         set {  _position = value; }
     }
 
+    /// <summary>
+    /// Перемещение юнита на другую клетку
+    /// </summary>
+    /// <param name="target">Клетка, на которую надо переместиться</param>
     public void GoToCell(Cell target)
     {
         movingTarget = new Vector3(target.transform.position.x,
@@ -55,6 +72,9 @@ public class Unit : MonoBehaviour
         moving = true;
     }
 
+    /// <summary>
+    /// Здоровье юнита
+    /// </summary>
     public int Health
     {
         get { return _health; }

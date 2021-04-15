@@ -4,17 +4,32 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Класс, обеспечивающий бой
+/// </summary>
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager S;
+    /// <summary>
+    /// Текущее поле боя
+    /// </summary>
     [SerializeField]
     public Battlefield bf;
+    /// <summary>
+    /// Текущий юнит
+    /// </summary>
     [SerializeField]
     private Unit _crntUnit;
+    /// <summary>
+    /// Кнопки ходьбы
+    /// </summary>
     [SerializeField]
     private List<Button> walkButtons = new List<Button>();
     [SerializeField]
     private Transform enemyPanel;
+    /// <summary>
+    ///  Шаблон кнопки вврага
+    /// </summary>
     [SerializeField]
     private GameObject enemyBtn;
     public Enemy selectedEnemy;
@@ -32,6 +47,10 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Ходьба союзного юнита
+    /// </summary>
+    /// <param name="dir">Направление</param>
     public void walkBtnClick(int dir)
     {
         direction crntDir = (direction)dir;
@@ -63,7 +82,10 @@ public class BattleManager : MonoBehaviour
         _crntUnit.GoToCell(target);
         CrntUnit = _crntUnit;
     }
-
+    /// <summary>
+    /// Атака текущим юнитом другого
+    /// </summary>
+    /// <param name="attackedUnit">Юнит, которого атакуют</param>
     public void AttackUnit(Unit attackedUnit)
     {
         if (attackedUnit is Enemy)
@@ -92,6 +114,9 @@ public class BattleManager : MonoBehaviour
         CrntUnit = _crntUnit;
     }
 
+    /// <summary>
+    /// Текущий юнит, изменеие свойства приводит к перерасчету интерфейса
+    /// </summary>
     public Unit CrntUnit
     {
         get { return CrntUnit;  }
