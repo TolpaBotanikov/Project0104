@@ -7,6 +7,15 @@ using UnityEngine;
 /// </summary>
 public class Battlefield : MonoBehaviour
 {
+    public static readonly Vector2[] DIRS = new[]
+        {
+            new Vector2(1, 0),
+            new Vector2(0, -1),
+            new Vector2(-1, 0),
+            new Vector2(0, 1),
+            new Vector2(1, -1),
+            new Vector2(-1, 1)
+        };
     /// <summary>
     /// Список всех клеток поля
     /// </summary>
@@ -37,5 +46,22 @@ public class Battlefield : MonoBehaviour
        return cells.Find(cell => cell.position.x == x && cell.position.y == y);
     }
 
-    
+    public Cell FindCell(Vector2 pos)
+    {
+        return cells.Find(cell => cell.position == pos);
+    }
+
+    public List<Cell> Neighbors(Cell cell)
+    {
+        List<Cell> result = new List<Cell>();
+        foreach (var dir in DIRS)
+        {
+            Cell next = FindCell(cell.position.x + dir.x, cell.position.y + dir.y);
+            if (next != null && /*next.unit == null &&*/ next.ostacle == null)
+            {
+                result.Add(next);
+            }
+        }
+        return result;
+    }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -119,7 +120,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public Unit CrntUnit
     {
-        get { return CrntUnit;  }
+        get { return _crntUnit;  }
         set
         {
             _crntUnit = value;
@@ -236,6 +237,11 @@ public class BattleManager : MonoBehaviour
                 {
                     EnemyButton go = Instantiate(enemyBtn, enemyPanel).GetComponent<EnemyButton>();
                     go.enemy = e;
+                }
+                List<Cell> traectory = Cell.ReconstructPath(bf.FindCell(CrntUnit.Position), bf.FindCell(bf.enemies[0].Position), bf, new AStarSearch(bf, bf.FindCell(CrntUnit.Position), bf.FindCell(bf.enemies[0].Position)).cameFrom);
+                foreach(Cell c in traectory)
+                {
+                    c.GetComponent<Renderer>().material.color = Color.blue;
                 }
             }
             
