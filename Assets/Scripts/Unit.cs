@@ -17,6 +17,7 @@ public class Unit : MonoBehaviour
     public float speed;
     [SerializeField]
     private int _health;
+    public float initiative;
     /// <summary>
     /// Текущее оружие
     /// </summary>

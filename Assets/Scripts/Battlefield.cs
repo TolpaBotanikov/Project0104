@@ -25,6 +25,7 @@ public class Battlefield : MonoBehaviour
     /// Список всех врагов на поле
     /// </summary>
     public List<Enemy> enemies = new List<Enemy>();
+    public Ally hero;
     /// <summary>
     ///Список перекрашенных клеток
     /// </summary>

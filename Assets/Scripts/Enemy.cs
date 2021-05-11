@@ -22,4 +22,13 @@ public class Enemy : Unit
                         material.color = Color.red;
         }
     }
+
+    public void MakeMove()
+    {
+        if(Cell.Distance(bf.hero.Position, Position) <= weapon.range && 
+            BattleManager.S.CalculateHitChance(weapon.hitChance, Position, bf.hero.Position) > 0)
+        {
+            BattleManager.S.AttackUnit(bf.hero);
+        }
+    }
 }

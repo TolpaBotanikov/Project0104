@@ -15,7 +15,7 @@ public class BattleManager : MonoBehaviour
     /// Текущее поле боя
     /// </summary>
     [SerializeField]
-    public Battlefield bf;
+    private Battlefield _bf;
     /// <summary>
     /// Текущий юнит
     /// </summary>
@@ -34,18 +34,41 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private GameObject enemyBtn;
     public Enemy selectedEnemy;
+    private List<Unit> initiativeList = new List<Unit>();
+    private int crntUnitId;
     // Start is called before the first frame update
     void Awake()
     {
         S = this;
         //bf = gameObject.GetComponent<Battlefield>();
-        CrntUnit = _crntUnit;
+        Bf = _bf;
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public Battlefield Bf
+    {
+        get { return _bf; }
+        set
+        {
+            setupBattle();
+        }
+    }
+
+    private void setupBattle()
+    {
+        initiativeList.Add(Bf.hero);
+        foreach(Enemy enemy in Bf.enemies)
+        {
+            initiativeList.Add(enemy);
+        }
+        initiativeList.OrderByDescending(unit => unit.initiative);
+        crntUnitId = 0;
+        CrntUnit = initiativeList[crntUnitId];
     }
 
     /// <summary>
@@ -60,22 +83,22 @@ public class BattleManager : MonoBehaviour
         switch (crntDir)
         {
             case direction.left:
-                target = bf.FindCell(pos.x - 1, pos.y + 1);
+                target = _bf.FindCell(pos.x - 1, pos.y + 1);
                 break;
             case direction.leftBack:
-                target = bf.FindCell(pos.x, pos.y + 1);
+                target = _bf.FindCell(pos.x, pos.y + 1);
                 break;
             case direction.leftForward:
-                target = bf.FindCell(pos.x - 1, pos.y);
+                target = _bf.FindCell(pos.x - 1, pos.y);
                 break;
             case direction.Right:
-                target = bf.FindCell(pos.x + 1, pos.y - 1);
+                target = _bf.FindCell(pos.x + 1, pos.y - 1);
                 break;
             case direction.RightBack:
-                target = bf.FindCell(pos.x + 1, pos.y);
+                target = _bf.FindCell(pos.x + 1, pos.y);
                 break;
             case direction.RightForward:
-                target = bf.FindCell(pos.x, pos.y - 1);
+                target = _bf.FindCell(pos.x, pos.y - 1);
                 break;
         }
         _crntUnit.bf.FindCell(_crntUnit.Position.x, _crntUnit.Position.y).unit = null;
@@ -91,17 +114,18 @@ public class BattleManager : MonoBehaviour
     {
         if (attackedUnit is Enemy)
             (attackedUnit as Enemy).Selected = false;
-        List<Cell> traectory = Cell.CreateTraectory(
-            bf.FindCell(_crntUnit.Position.x, _crntUnit.Position.y),
-            bf.FindCell(attackedUnit.Position.x, attackedUnit.Position.y), bf);
-        float hitChance = _crntUnit.weapon.hitChance;
-        foreach(Cell cell in traectory)
-        {
-            if (cell.ostacle != null)
-            {
-                hitChance *= cell.ostacle.hitChance;
-            }
-        }
+        float hitChance = CalculateHitChance(_crntUnit.weapon.hitChance, _crntUnit.Position, attackedUnit.Position);
+        //List<Cell> traectory = Cell.CreateTraectory(
+        //    _bf.FindCell(_crntUnit.Position.x, _crntUnit.Position.y),
+        //    _bf.FindCell(attackedUnit.Position.x, attackedUnit.Position.y), _bf);
+        //float hitChance = _crntUnit.weapon.hitChance;
+        //foreach(Cell cell in traectory)
+        //{
+        //    if (cell.ostacle != null)
+        //    {
+        //        hitChance *= cell.ostacle.hitChance;
+        //    }
+        //}
         if (Random.value > hitChance)
             return;
         _crntUnit.weapon.transform.LookAt(attackedUnit.transform);
@@ -112,7 +136,10 @@ public class BattleManager : MonoBehaviour
         proj.target = attackedUnit.transform.position;
         proj.rigid.velocity = _crntUnit.weapon.transform.forward * proj.speed;
         attackedUnit.Health -= _crntUnit.weapon.damage;
-        CrntUnit = _crntUnit;
+        crntUnitId++;
+        if (crntUnitId >= initiativeList.Count)
+            crntUnitId = 0;
+        CrntUnit = initiativeList[crntUnitId];
     }
 
     /// <summary>
@@ -127,94 +154,94 @@ public class BattleManager : MonoBehaviour
             if (_crntUnit is Ally)
             {
                 var pos = _crntUnit.Position;
-                foreach (Cell cell in bf.recoloredCells)
+                foreach (Cell cell in _bf.recoloredCells)
                     cell.gameObject.GetComponent<Renderer>().
                         material.color = Color.white;
                 foreach (Button wb in walkButtons)
                     wb.interactable = true;
 
                 // Левый передний
-                Cell lf = bf.FindCell(pos.x - 1, pos.y);
+                Cell lf = _bf.FindCell(pos.x - 1, pos.y);
                 if (lf == null || 
                     lf.unit != null ||
                     lf.ostacle != null)
                     walkButtons[0].interactable = false;
                 else
                 {
-                    var cell = bf.FindCell(pos.x - 1, pos.y);
+                    var cell = _bf.FindCell(pos.x - 1, pos.y);
                     cell.gameObject.GetComponent<Renderer>().
                         material.color = Color.green;
-                    bf.recoloredCells.Add(cell);
+                    _bf.recoloredCells.Add(cell);
                 }
 
                 // Левый
-                Cell l = bf.FindCell(pos.x - 1, pos.y + 1);
+                Cell l = _bf.FindCell(pos.x - 1, pos.y + 1);
                 if (l == null ||
                     l.unit != null ||
                     l.ostacle != null)
                     walkButtons[1].interactable = false;
                 else
                 {
-                    var cell = bf.FindCell(pos.x - 1, pos.y + 1);
+                    var cell = _bf.FindCell(pos.x - 1, pos.y + 1);
                     cell.gameObject.GetComponent<Renderer>().
                         material.color = Color.green;
-                    bf.recoloredCells.Add(cell);
+                    _bf.recoloredCells.Add(cell);
                 }
 
                 // Левый задний
-                Cell lb = bf.FindCell(pos.x, pos.y + 1);
+                Cell lb = _bf.FindCell(pos.x, pos.y + 1);
                 if (lb == null || 
                     lb.unit != null ||
                     lb.ostacle != null)
                     walkButtons[2].interactable = false;
                 else
                 {
-                    var cell = bf.FindCell(pos.x, pos.y + 1);
+                    var cell = _bf.FindCell(pos.x, pos.y + 1);
                     cell.gameObject.GetComponent<Renderer>().
                         material.color = Color.green;
-                    bf.recoloredCells.Add(cell);
+                    _bf.recoloredCells.Add(cell);
                 }
 
                 // Правый передний
-                Cell rf = bf.FindCell(pos.x, pos.y - 1);
+                Cell rf = _bf.FindCell(pos.x, pos.y - 1);
                 if (rf == null || 
                     rf.unit != null ||
                     rf.ostacle != null)
                     walkButtons[3].interactable = false;
                 else
                 {
-                    var cell = bf.FindCell(pos.x, pos.y - 1);
+                    var cell = _bf.FindCell(pos.x, pos.y - 1);
                     cell.gameObject.GetComponent<Renderer>().
                         material.color = Color.green;
-                    bf.recoloredCells.Add(cell);
+                    _bf.recoloredCells.Add(cell);
                 }
 
                 // Правый
-                Cell r = bf.FindCell(pos.x + 1, pos.y - 1);
+                Cell r = _bf.FindCell(pos.x + 1, pos.y - 1);
                 if (r == null || 
                     r.unit != null ||
                     r.ostacle != null)
                     walkButtons[4].interactable = false;
                 else
                 {
-                    var cell = bf.FindCell(pos.x + 1, pos.y - 1);
+                    var cell = _bf.FindCell(pos.x + 1, pos.y - 1);
                     cell.gameObject.GetComponent<Renderer>().
                         material.color = Color.green;
-                    bf.recoloredCells.Add(cell);
+                    _bf.recoloredCells.Add(cell);
                 }
 
                 // Правый задний
-                Cell rb = bf.FindCell(pos.x + 1, pos.y);
+                Cell rb = _bf.FindCell(pos.x + 1, pos.y);
                 if (rb == null || 
                     rb.unit != null ||
                     rb.ostacle != null)
                     walkButtons[5].interactable = false;
                 else
                 {
-                    var cell = bf.FindCell(pos.x + 1, pos.y);
+                    var cell = _bf.FindCell(pos.x + 1, pos.y);
                     cell.gameObject.GetComponent<Renderer>().
                         material.color = Color.green;
-                    bf.recoloredCells.Add(cell);
+                    _bf.recoloredCells.Add(cell);
                 }
 
 
@@ -223,7 +250,7 @@ public class BattleManager : MonoBehaviour
                     Destroy(children[i].gameObject);
                 enemyPanel.parent.parent.gameObject.SetActive(false);
                 List<Enemy> enemiesInRange = new List<Enemy>();
-                foreach(Enemy enemy in bf.enemies)
+                foreach(Enemy enemy in _bf.enemies)
                 {
                     if (enemy.Position.x <= _crntUnit.Position.x + _crntUnit.weapon.range &&
                         enemy.Position.x >= _crntUnit.Position.x - _crntUnit.weapon.range &&
@@ -238,13 +265,27 @@ public class BattleManager : MonoBehaviour
                     EnemyButton go = Instantiate(enemyBtn, enemyPanel).GetComponent<EnemyButton>();
                     go.enemy = e;
                 }
-                List<Cell> traectory = Cell.ReconstructPath(bf.FindCell(CrntUnit.Position), bf.FindCell(bf.enemies[0].Position), bf, new AStarSearch(bf, bf.FindCell(CrntUnit.Position), bf.FindCell(bf.enemies[0].Position)).cameFrom);
-                foreach(Cell c in traectory)
-                {
-                    c.GetComponent<Renderer>().material.color = Color.blue;
-                }
             }
-            
+            else if (_crntUnit is Enemy)
+            {
+                (_crntUnit as Enemy).MakeMove();
+            }
         }
+    }
+
+    public float CalculateHitChance(float baseChance, Vector2 start, Vector2 finish)
+    {
+        List<Cell> traectory = Cell.CreateTraectory(
+            _bf.FindCell(start),
+            _bf.FindCell(finish), _bf);
+        float hitChance = baseChance;
+        foreach (Cell cell in traectory)
+        {
+            if (cell.ostacle != null)
+            {
+                hitChance *= cell.ostacle.hitChance;
+            }
+        }
+        return hitChance;
     }
 }
