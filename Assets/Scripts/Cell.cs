@@ -21,6 +21,8 @@ public class Cell : MonoBehaviour
     /// </summary>
     public Obstacle ostacle;
 
+    #region Работа с координатами
+
     /// <summary>
     /// Перевод координат клетки в кубические
     /// </summary>
@@ -92,6 +94,13 @@ public class Cell : MonoBehaviour
         return (Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y) + Mathf.Abs(a.z - b.z)) / 2;
     }
 
+    public static float Distance(Vector2 a, Vector2 b)
+    {
+        return HexDistance(HexToCube(a), HexToCube(b));
+    }
+
+    # endregion
+
     /// <summary>
     ///  Рассчитывает прямую траекторию между двумя клетками
     /// </summary>
@@ -111,5 +120,36 @@ public class Cell : MonoBehaviour
             traectory.Add(bf.FindCell(pos.x, pos.y));
         }
         return traectory;
+    }
+
+    //# region Операторы
+    //public static bool operator ==(Cell a, Cell b)
+    //{
+    //    if (null = && null == b)
+    //        return true;
+    //    else if (null == a || null == b)
+    //        return false;
+    //    else
+    //        return a.position.x == b.position.x && a.position.y == b.position.y;
+    //}
+
+    //public static bool operator !=(Cell a, Cell b)
+    //{
+    //    return !(a == b);
+    //}
+    //#endregion
+
+    public static List<Cell> ReconstructPath(Cell start, Cell finish, Battlefield bf, Dictionary<Cell, Cell> cameFrom)
+    {
+        List<Cell> path = new List<Cell>();
+        Cell current = finish;
+        while (current != start)
+        {
+            path.Add(current);
+            current = cameFrom[current];
+        }
+        path.Add(start);
+        path.Reverse();
+        return path;
     }
 }
