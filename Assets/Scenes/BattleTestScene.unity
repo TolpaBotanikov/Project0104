@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 77256898}
   - component: {fileID: 77256897}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,15 +284,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _position: {x: -2, y: 0}
-  height: 0
-  speed: 0
+  height: 1
+  speed: 1
   _health: 10
   initiative: 1
   weapon: {fileID: 1952206385}
-  permissibleDistance: 0
+  permissibleDistance: 0.25
   movingTarget: {x: 0, y: 0, z: 0}
   bf: {fileID: 592410658}
   showDamageDelay: 0.25
+  originalColor: {r: 1, g: 0, b: 0, a: 0}
 --- !u!136 &77256898
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2323,6 +2324,7 @@ MonoBehaviour:
   movingTarget: {x: 0, y: 0, z: 0}
   bf: {fileID: 592410658}
   showDamageDelay: 0.25
+  originalColor: {r: 0, g: 1, b: 0, a: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2534,17 +2536,17 @@ PrefabInstance:
     - target: {fileID: 8688503924618932601, guid: b5c95dba307e5f245aa7ef4f5e094bdd,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.0574384
+      value: 0.068
       objectReference: {fileID: 0}
     - target: {fileID: 8688503924618932601, guid: b5c95dba307e5f245aa7ef4f5e094bdd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.42759895
+      value: 0.797
       objectReference: {fileID: 0}
     - target: {fileID: 8688503924618932601, guid: b5c95dba307e5f245aa7ef4f5e094bdd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.337819
+      value: -0.026
       objectReference: {fileID: 0}
     - target: {fileID: 8688503924618932601, guid: b5c95dba307e5f245aa7ef4f5e094bdd,
         type: 3}
@@ -4246,7 +4248,7 @@ GameObject:
   - component: {fileID: 1625742171}
   - component: {fileID: 1625742170}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4265,15 +4267,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _position: {x: 0, y: -1}
-  height: 0
-  speed: 0
+  height: 1
+  speed: 1
   _health: 20
   initiative: 0
   weapon: {fileID: 931851850}
-  permissibleDistance: 0
+  permissibleDistance: 0.25
   movingTarget: {x: 0, y: 0, z: 0}
   bf: {fileID: 592410658}
   showDamageDelay: 0.25
+  originalColor: {r: 1, g: 0, b: 0, a: 0}
 --- !u!136 &1625742171
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4669,17 +4672,17 @@ PrefabInstance:
     - target: {fileID: 8688503924618932601, guid: b5c95dba307e5f245aa7ef4f5e094bdd,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.0574384
+      value: 0.122
       objectReference: {fileID: 0}
     - target: {fileID: 8688503924618932601, guid: b5c95dba307e5f245aa7ef4f5e094bdd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.42759895
+      value: 0.882
       objectReference: {fileID: 0}
     - target: {fileID: 8688503924618932601, guid: b5c95dba307e5f245aa7ef4f5e094bdd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.337819
+      value: -0.047
       objectReference: {fileID: 0}
     - target: {fileID: 8688503924618932601, guid: b5c95dba307e5f245aa7ef4f5e094bdd,
         type: 3}

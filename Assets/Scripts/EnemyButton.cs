@@ -23,6 +23,7 @@ public class EnemyButton : MonoBehaviour
             if (BattleManager.S.selectedEnemy != null)
                 BattleManager.S.selectedEnemy.Selected = false;
             BattleManager.S.selectedEnemy = enemy;
+            BattleManager.S.selectedEnemy.Selected = true;
         }
         else
         {

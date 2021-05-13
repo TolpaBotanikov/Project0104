@@ -27,10 +27,12 @@ public class Unit : MonoBehaviour
     public Vector3 movingTarget;
     public Battlefield bf;
     public float showDamageDelay;
+    [SerializeField]
+    private Color originalColor;
 
     private void Awake()
     {
-
+        var u = this;
     }
 
     protected void Update()
@@ -43,11 +45,12 @@ public class Unit : MonoBehaviour
             pos.y = Mathf.Lerp(transform.position.y, movingTarget.y, Time.deltaTime * speed);
             pos.z = Mathf.Lerp(transform.position.z, movingTarget.z, Time.deltaTime * speed);
             transform.position = pos;
-        }
-        if (Vector3.Distance(transform.position, movingTarget) < permissibleDistance)
-        {
-            //transform.position = movingTarget;
-            moving = false;
+            if (Vector3.Distance(transform.position, movingTarget) < permissibleDistance)
+            {
+                BattleManager.S.SwitchUnit();
+                //transform.position = movingTarget;
+                moving = false;
+            }
         }
     }
 
@@ -66,10 +69,14 @@ public class Unit : MonoBehaviour
     /// <param name="target">Клетка, на которую надо переместиться</param>
     public void GoToCell(Cell target)
     {
+
         movingTarget = new Vector3(target.transform.position.x,
             target.transform.position.y + height,
             target.transform.position.z);
+        Cell previousCell = bf.FindCell(Position.x, Position.y);
+        previousCell.unit= null;
         target.unit = this;
+        Position = target.position;
         moving = true;
     }
 
@@ -99,6 +106,6 @@ public class Unit : MonoBehaviour
     private void ResetMaterial()
     {
         this.gameObject.GetComponent<Renderer>().
-            material.color = Color.red;
+            material.color = originalColor;
     }
 }
