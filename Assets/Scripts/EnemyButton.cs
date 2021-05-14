@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Кнопка врага
@@ -11,6 +12,7 @@ public class EnemyButton : MonoBehaviour
     /// Прикрепленный враг
     /// </summary>
     public Enemy enemy;
+    public Text text;
 
     /// <summary>
     /// Обработчик нажатия

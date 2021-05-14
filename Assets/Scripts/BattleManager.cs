@@ -244,6 +244,8 @@ public class BattleManager : MonoBehaviour
                 foreach (Enemy e in enemiesInRange)
                 {
                     EnemyButton go = Instantiate(enemyBtn, enemyPanel).GetComponent<EnemyButton>();
+                    string chance = CalculateHitChance(_crntUnit.weapon.hitChance, _crntUnit.Position, e.Position) * 100 + "%";
+                    go.text.text = chance;
                     go.enemy = e;
                 }
             }
