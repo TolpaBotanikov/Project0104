@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9287c1f98a6ad3469352d58ed10f3ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 3
-  damage: 5
+  range: 6
+  damage: 15
   hitChance: 0.8
   shootPoint: {fileID: 5349617414083919775}
   projectilePrefab: {fileID: 481930406221123500, guid: 5035c32253203b947bc3201dfca5c375,

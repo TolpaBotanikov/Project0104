@@ -39,7 +39,17 @@ ModelImporter:
   - first:
       74: 1559600306883950199
     second: Gun|idle
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: d8e258e244de2d34ca78920148976222, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: d8e258e244de2d34ca78920148976222, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -117,7 +127,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.0034999999
+    globalScale: 0.35
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
