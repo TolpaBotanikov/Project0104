@@ -115,6 +115,7 @@ public class BattleManager : MonoBehaviour
         if (attackedUnit is Enemy)
             (attackedUnit as Enemy).Selected = false;
         float hitChance = CalculateHitChance(_crntUnit.weapon.hitChance, _crntUnit.Position, attackedUnit.Position);
+        UnshowInterface();
         SwitchUnit();
         if (Random.value > hitChance)
             return;
@@ -126,7 +127,6 @@ public class BattleManager : MonoBehaviour
         proj.target = attackedUnit.transform.position;
         proj.rigid.velocity = _crntUnit.weapon.transform.forward * proj.speed;
         attackedUnit.Health -= _crntUnit.weapon.damage;
-        UnshowInterface();
     }
 
     /// <summary>

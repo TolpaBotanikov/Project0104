@@ -16,11 +16,11 @@ public class Enemy : Unit
         {
             _selected = value;
            if (_selected)
-                this.gameObject.GetComponent<Renderer>().
+                bf.FindCell(Position).gameObject.GetComponent<Renderer>().
                         material.color = Color.blue;
            else
-                this.gameObject.GetComponent<Renderer>().
-                        material.color = Color.red;
+                bf.FindCell(Position).gameObject.GetComponent<Renderer>().
+                        material.color = Color.white;
         }
     }
 
@@ -35,7 +35,10 @@ public class Enemy : Unit
         {
             AStarSearch path = new AStarSearch(bf, bf.FindCell(Position), bf.FindCell(bf.hero.Position));
             Cell target = Cell.ReconstructPath(bf.FindCell(Position), bf.FindCell(bf.hero.Position), bf, path.cameFrom)[1];
-            GoToCell(target);
+            if (target.unit == null)
+                GoToCell(target);
+            else
+                BattleManager.S.SwitchUnit();
         }
 
     }

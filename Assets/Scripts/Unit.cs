@@ -97,7 +97,7 @@ public class Unit : MonoBehaviour
                 }
                 Destroy(this.gameObject);
             }
-            this.gameObject.GetComponent<Renderer>().
+            bf.FindCell(Position).gameObject.GetComponent<Renderer>().
                         material.color = Color.yellow;
             Invoke("ResetMaterial", showDamageDelay);
         }
@@ -105,7 +105,7 @@ public class Unit : MonoBehaviour
 
     private void ResetMaterial()
     {
-        this.gameObject.GetComponent<Renderer>().
+        bf.FindCell(Position).gameObject.GetComponent<Renderer>().
             material.color = originalColor;
     }
 }
