@@ -115,10 +115,12 @@ public class BattleManager : MonoBehaviour
         if (attackedUnit is Enemy)
             (attackedUnit as Enemy).Selected = false;
         float hitChance = CalculateHitChance(_crntUnit.weapon.hitChance, _crntUnit.Position, attackedUnit.Position);
-        UnshowInterface();
-        SwitchUnit();
+        UnshowInterface();      
         if (Random.value > hitChance)
+        {
+            SwitchUnit();
             return;
+        }
         _crntUnit.weapon.transform.LookAt(attackedUnit.transform);
         Projectile proj = Instantiate(_crntUnit.weapon.projectilePrefab,
             _crntUnit.weapon.shootPoint.transform.position,
@@ -127,6 +129,7 @@ public class BattleManager : MonoBehaviour
         proj.target = attackedUnit.transform.position;
         proj.rigid.velocity = _crntUnit.weapon.transform.forward * proj.speed;
         attackedUnit.Health -= _crntUnit.weapon.damage;
+        SwitchUnit();
     }
 
     /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Класс для работы с юнитами
@@ -96,6 +97,10 @@ public class Unit : MonoBehaviour
                     bf.enemies.Remove(this as Enemy);
                 }
                 Destroy(this.gameObject);
+                if (this is Ally)
+                {
+                    SceneManager.LoadScene("BattleLevel");
+                }
             }
             bf.FindCell(Position).gameObject.GetComponent<Renderer>().
                         material.color = Color.yellow;
