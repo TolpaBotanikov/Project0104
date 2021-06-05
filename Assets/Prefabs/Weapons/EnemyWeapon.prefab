@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 6
-  damage: 10
+  damage: 5
   hitChance: 0.6
   shootPoint: {fileID: 1129469312028048681}
   projectilePrefab: {fileID: 481930406221123500, guid: 5035c32253203b947bc3201dfca5c375,

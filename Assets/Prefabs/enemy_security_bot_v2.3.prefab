@@ -4119,7 +4119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 0, y: 0}
   height: 2.67111
-  speed: 1
+  speed: 4
   _health: 25
   initiative: 0
   weapon: {fileID: 7264506504395460154}
